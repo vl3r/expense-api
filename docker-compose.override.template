@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+
+  db:
+    ports:
+      - "3340:3306"
+
+  nginx:
+    ports:
+      - "8080:80"
+
+  php:
+    build:
+      target: php-dev
+    environment:
+      COMPOSER_MEMORY_LIMIT: "-1"
+      PHP_IDE_CONFIG: serverName=exspense-api
+      XDEBUG_SESSION: 1
+#      XDEBUG_MODE: "off"
+      XDEBUG_MODE: debug
+      XDEBUG_CONFIG: >-
+        client_host=host.docker.internal
+        client_port=9003
+        start_with_request=yes
+        idekey=PHPSTORM

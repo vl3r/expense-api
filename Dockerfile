@@ -88,7 +88,7 @@ RUN set -eux; \
     \
     apk del .build-deps
 
-RUN mkdir -p /srv/first
+RUN mkdir -p /srv/expense
 RUN chown -R $USER: /srv
 
 USER $USER
@@ -99,7 +99,7 @@ COPY --chown=$USER:$USER --from=composer:2.6.5 /usr/bin/composer /usr/bin/compos
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
-WORKDIR /srv/first
+WORKDIR /srv/expense
 ################################################
 #          <<< Docker basic-php image          #
 ################################################
@@ -167,7 +167,7 @@ RUN set -eux; \
     composer run-script --no-dev post-install-cmd; \
     chmod +x bin/console; sync
 
-VOLUME /srv/first/var
+VOLUME /srv/expense/var
 
 COPY --chown=$USER:$USER build/package/php-fpm/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 
@@ -240,9 +240,9 @@ USER $USER
 COPY --chown=$USER:$USER build/package/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY --chown=$USER:$USER build/package/nginx/conf.d/default.conf /etc/nginx/templates/default.conf.template
 
-WORKDIR /srv/first/public
+WORKDIR /srv/expense/public
 
-COPY --chown=$USER:$USER --from=php /srv/first/public ./
+COPY --chown=$USER:$USER --from=php /srv/expense/public ./
 
 ENV API_NGINX_FASTCGI_PASS="php:9000"
 
