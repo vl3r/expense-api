@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Entities\Wallet\Wallet" table="wallets">
+        <id name="id" column="id" type="guid">
+            <generator strategy="NONE" />
+        </id>
+
+        <field name="name" type="string" nullable="false" />
+        <field name="userId" column="user_id" type="string" length="36" nullable="false" column-definition="CHAR(36) NOT NULL">
+            <options>
+                <option name="fixed">true</option>
+            </options>
+        </field>
+    </entity>
+</doctrine-mapping>

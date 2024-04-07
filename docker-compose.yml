@@ -16,6 +16,7 @@ services:
       - ./:/srv/expense:rw,cached
       - ./build/package/php-fpm/conf.d/api.dev.ini:/usr/local/etc/php/conf.d/api.ini
     healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/ping"]
       interval: 10s
       timeout: 3s
       retries: 3

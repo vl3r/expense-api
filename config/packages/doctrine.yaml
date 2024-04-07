@@ -8,6 +8,8 @@ doctrine:
 
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        types:
+            money_amount: 'App\Interfaces\Gateways\Doctrine\Type\MoneyAmountType'
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
@@ -22,6 +24,11 @@ doctrine:
                 is_bundle: false
                 prefix: App\Entities
                 alias: App
+            Money:
+                type: xml
+                dir: "%kernel.project_dir%/src/Interfaces/Resources/config/doctrine/embedded/money"
+                is_bundle: false
+                prefix: Money
         controller_resolver:
             auto_mapping: true
 
