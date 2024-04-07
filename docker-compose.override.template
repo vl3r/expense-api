@@ -15,7 +15,7 @@ services:
       target: php-dev
     environment:
       COMPOSER_MEMORY_LIMIT: "-1"
-      PHP_IDE_CONFIG: serverName=exspense-api
+      PHP_IDE_CONFIG: serverName=expense-api
       XDEBUG_SESSION: 1
 #      XDEBUG_MODE: "off"
       XDEBUG_MODE: debug
