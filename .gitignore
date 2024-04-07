@@ -1,0 +1,18 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpstorm ###
+/.idea/
+/.DS_Store
+###< phpstorm ###
+
+###> docker-compose ###
+/docker-compose.override.yml
+###> docker-compose ###

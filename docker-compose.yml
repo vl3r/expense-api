@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+
+  php:
+    container_name: first-php
+    build:
+      context: ./
+      target: php
+    restart: unless-stopped
+    environment:
+      APP_ENV: dev
+    depends_on:
+      - db
+    volumes:
+      - ./:/srv/first:rw,cached
+      - ./build/package/php-fpm/conf.d/api.dev.ini:/usr/local/etc/php/conf.d/api.ini
+    healthcheck:
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 60s
+
+  db:
+    container_name: first-db
+    image: mariadb:10.5.9
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306"
+
+  nginx:
+    container_name: first-nginx
+    build:
+      context: ./
+      target: nginx
+    restart: unless-stopped
+    environment:
+      API_NGINX_FASTCGI_PASS: "first-php:9000"
+    depends_on:
+      - php
+    volumes:
+      - ./public:/srv/first/public:ro
+
+volumes:
+  db_data: {}
