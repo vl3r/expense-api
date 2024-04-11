@@ -1,0 +1,13 @@
+ValidationErrorModel:
+    required: ['status', 'errors']
+    properties:
+        status:
+            type: integer
+            example: 422
+        errors:
+            properties:
+                "[path][to][prop]":
+                    type: array
+                    items:
+                        type: string
+                        example: "Validation error"

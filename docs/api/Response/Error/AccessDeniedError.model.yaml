@@ -1,0 +1,13 @@
+AccessDeniedErrorModel:
+    required: ['status', 'errors']
+    properties:
+        status:
+            type: integer
+            example: 403
+        errors:
+            properties:
+                http:
+                    type: array
+                    items:
+                        type: string
+                        example: "Access denied."

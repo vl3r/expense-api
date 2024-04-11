@@ -11,5 +11,6 @@
         </id>
 
         <field name="email" type="string" nullable="false" unique="true" />
+        <field name="password" type="string" nullable="false" />
     </entity>
 </doctrine-mapping>

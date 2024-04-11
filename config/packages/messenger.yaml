@@ -1,0 +1,54 @@
+framework:
+    messenger:
+        buses:
+            command.bus:
+                middleware:
+                    - artox_lab_clarc.bus.validation
+                    - doctrine_transaction
+                    - doctrine_close_connection
+            query.bus:
+                middleware:
+                    - artox_lab_clarc.bus.validation
+                    - doctrine_close_connection
+            event.bus:
+                middleware:
+                    - artox_lab_clarc.bus.validation
+                    - doctrine_close_connection
+            message.bus:
+                middleware:
+                    - artox_lab_clarc.bus.validation
+                    - doctrine_close_connection
+        failure_transport: failed
+
+        transports:
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            sync: 'sync://'
+
+#            async:
+#                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+#                retry_strategy:
+#                    max_retries: 3
+#                    delay: 1000
+#                    multiplier: 2
+#                options:
+#                    auto_setup: true
+#                    queues:
+#                        messages: ~
+
+            failed:
+                dsn: '%env(DOCTRINE_TRANSPORT_DSN)%'
+                options:
+                    auto_setup: false
+                    queue_name: messages-failed
+
+        routing:
+            # Route your messages to the transports
+            # 'App\Message\YourMessage': async
+
+# when@test:
+#    framework:
+#        messenger:
+#            transports:
+#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+#                async: 'in-memory://'

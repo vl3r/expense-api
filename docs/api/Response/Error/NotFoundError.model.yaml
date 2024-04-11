@@ -1,0 +1,13 @@
+NotFoundErrorModel:
+    required: ['status', 'errors']
+    properties:
+        status:
+            type: integer
+            example: 404
+        errors:
+            properties:
+                http:
+                    type: array
+                    items:
+                        type: string
+                        example: "Entity not found."

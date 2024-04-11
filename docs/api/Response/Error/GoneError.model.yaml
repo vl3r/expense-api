@@ -1,0 +1,13 @@
+GoneErrorModel:
+    required: ['status', 'errors']
+    properties:
+        status:
+            type: integer
+            example: 410
+        errors:
+            properties:
+                "[path][to][prop]":
+                    type: array
+                    items:
+                        type: string
+                        example: "Something expired"

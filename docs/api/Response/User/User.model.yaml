@@ -1,0 +1,11 @@
+UserModel:
+    required:
+        - 'uuid'
+        - 'email'
+    properties:
+        uuid:
+            type: string
+            example: '97920faf-5f81-4387-9989-c8e24ced59d8'
+        email:
+            type: string
+            example: 'email@example.com'

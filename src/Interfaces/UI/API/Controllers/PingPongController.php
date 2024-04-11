@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class PingPongController extends AbstractController
+final class PingPongController extends AbstractController
 {
     /**
      * Health check ping route

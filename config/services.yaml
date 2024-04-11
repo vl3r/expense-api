@@ -18,5 +18,16 @@ services:
         exclude:
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    app.security.authenticator.only_secured_jwt:
+        class: App\Interfaces\Security\Guard\OnlySecuredJWTAuthenticator
+        parent: lexik_jwt_authentication.security.jwt_authenticator
+        arguments:
+            $accessMap: '@security.access_map'
+
+    app.services.nelmio_api_doc.external_schema_describer.default:
+        class: App\Interfaces\Services\NelmioApiDoc\ExternalSchemasDescriber
+        arguments:
+            - '%kernel.project_dir%/docs/api/index.yaml'
+        tags:
+            - { name: nelmio_api_doc.describer.default, priority: -256 }
+            - { name: nelmio_api_doc.describer.private, priority: -256}

@@ -1,0 +1,5 @@
+imports:
+    - { resource: 'AccessDeniedError.model.yaml' }
+    - { resource: 'NotFoundError.model.yaml' }
+    - { resource: 'ValidationError.model.yaml' }
+    - { resource: 'GoneError.model.yaml' }
