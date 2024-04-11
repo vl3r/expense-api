@@ -14,11 +14,9 @@ final class UserTransformer extends TransformerAbstract
      */
     public function transform(UserDTO $userDTO): array
     {
-        $transformed = [
+        return [
             'id'    => $userDTO->id,
             'email' => $userDTO->email,
         ];
-
-        return $transformed;
     }
 }

@@ -10,18 +10,18 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-final class UserProvider implements UserProviderInterface
+final readonly class UserProvider implements UserProviderInterface
 {
     public function __construct(private UserGatewayInterface $userGateway)
     {
     }
 
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         return $user;
     }
 
-    public function supportsClass(string $class)
+    public function supportsClass(string $class): bool
     {
         return $class === User::class;
     }

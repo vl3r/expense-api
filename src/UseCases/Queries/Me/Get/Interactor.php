@@ -7,9 +7,10 @@ namespace App\UseCases\Queries\Me\Get;
 use App\Entities\DTO\User\UserDTO;
 use App\Entities\Exceptions\User\UserNotFoundException;
 use App\Entities\User\UserStorageInterface;
-use ArtoxLab\Bundle\ClarcBundle\Core\UseCases\Commands\AbstractInteractor;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-final class Interactor extends AbstractInteractor
+#[AsMessageHandler(bus: 'query.bus', fromTransport: 'sync')]
+final readonly class Interactor
 {
     public function __construct(private UserStorageInterface $userStorage)
     {

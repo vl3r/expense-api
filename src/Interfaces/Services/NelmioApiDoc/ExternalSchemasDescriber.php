@@ -9,7 +9,7 @@ use Nelmio\ApiDocBundle\OpenApiPhp\Util;
 use OpenApi\Annotations\OpenApi;
 use Symfony\Component\Yaml\Yaml;
 
-final class ExternalSchemasDescriber implements DescriberInterface
+final readonly class ExternalSchemasDescriber implements DescriberInterface
 {
     public function __construct(private string $docPath)
     {

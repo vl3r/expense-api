@@ -8,7 +8,7 @@ use App\Entities\User\User;
 use App\Entities\User\UserGatewayInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class UserGateway implements UserGatewayInterface
+final readonly class UserGateway implements UserGatewayInterface
 {
     public function __construct(private EntityManagerInterface $em)
     {

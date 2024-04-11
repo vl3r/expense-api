@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entities\DTO\User;
 
-final class UserDTO
+final readonly class UserDTO
 {
     public function __construct(
-        public readonly string $id,
-        public readonly string $email,
+        public string $id,
+        public string $email,
     ) {
     }
 }

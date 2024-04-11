@@ -8,9 +8,9 @@ use App\Entities\User\User;
 use App\Entities\User\UserStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-final class UserStorage implements UserStorageInterface
+final readonly class UserStorage implements UserStorageInterface
 {
-    public function __construct(private readonly TokenStorageInterface $tokenStorage)
+    public function __construct(private TokenStorageInterface $tokenStorage)
     {
     }
 
