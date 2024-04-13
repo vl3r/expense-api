@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entities\Wallet;
 
+use App\Entities\DTO\Wallet\WalletDTO;
 use Ramsey\Uuid\Uuid;
 
 class Wallet
@@ -35,5 +36,14 @@ class Wallet
     public function changeName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function toDTO(): WalletDTO
+    {
+        return new WalletDTO(
+            id: $this->id,
+            name: $this->name,
+            userId: $this->userId,
+        );
     }
 }
