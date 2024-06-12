@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entities\Transaction;
 
-use DateTimeInterface;
+use App\Entities\DTO\Transaction\TransactionDTO;
+use DateTimeImmutable;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
 
@@ -15,7 +16,7 @@ class Transaction
     public function __construct(
         private readonly string $walletId,
         private Money $amount,
-        private DateTimeInterface $committedAt,
+        private DateTimeImmutable $committedAt,
     ) {
         $this->id = Uuid::uuid4()->toString();
     }
@@ -40,13 +41,23 @@ class Transaction
         $this->amount = $amount;
     }
 
-    public function getCommittedAt(): DateTimeInterface
+    public function getCommittedAt(): DateTimeImmutable
     {
         return $this->committedAt;
     }
 
-    public function changeCommittedAt(DateTimeInterface $committedAt): void
+    public function changeCommittedAt(DateTimeImmutable $committedAt): void
     {
         $this->committedAt = $committedAt;
+    }
+
+    public function toDTO(): TransactionDTO
+    {
+        return new TransactionDTO(
+            id: $this->id,
+            walletId: $this->walletId,
+            amount: $this->amount,
+            committedAt: $this->committedAt,
+        );
     }
 }

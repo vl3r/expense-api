@@ -7,4 +7,5 @@ namespace App\Entities\User;
 interface UserStorageInterface
 {
     public function getUser(): ?User;
+
 }

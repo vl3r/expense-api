@@ -1,0 +1,33 @@
+PaginationModel:
+    required:
+        - total
+        - count
+        - per_page
+        - current_page
+        - total_pages
+        - links
+    properties:
+        total:
+            type: integer
+            example: 120
+        count:
+            type: integer
+            example: 20
+        per_page:
+            type: integer
+            example: 20
+        current_page:
+            type: integer
+            example: 3
+        total_pages:
+            type: integer
+            example: 6
+        links:
+            description: Pagination links. May be empty if links not provided.
+            properties:
+                prev:
+                    type: string
+                    example: 'https://example.com/link?page=2'
+                next:
+                    type: string
+                    example: 'https://example.com/link?page=4'

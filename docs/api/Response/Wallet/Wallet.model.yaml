@@ -1,0 +1,15 @@
+WalletModel:
+    required:
+    - id
+    - name
+    - user_id
+    properties:
+        id:
+            type: string
+            format: uuid
+        name:
+            type: string
+            example: 'phone'
+        user_id:
+            type: string
+            format: uuid

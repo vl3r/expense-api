@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Interfaces\UI\API\Transformers\Wallets;
+namespace App\Interfaces\UI\API\Transformers\Wallet;
 
 use App\Entities\DTO\Wallet\WalletDTO;
 use League\Fractal\TransformerAbstract;

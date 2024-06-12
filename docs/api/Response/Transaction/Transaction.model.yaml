@@ -1,0 +1,23 @@
+TransactionsModel:
+    required:
+        - id
+        - wallet_id
+        - committed_at
+        - amount_amount
+        - amount_currency_code
+    properties:
+        id:
+            type: string
+            format: uuid
+        wallet_id:
+            type: string
+            format: uuid
+        amount:
+            type: string
+            example: '100'
+        currency:
+            type: string
+            example: 'BYN'
+        committed_at:
+            type: string
+            format: date-time

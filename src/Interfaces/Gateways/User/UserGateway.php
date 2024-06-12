@@ -20,4 +20,5 @@ final readonly class UserGateway implements UserGatewayInterface
             'email' => $email,
         ]);
     }
+
 }

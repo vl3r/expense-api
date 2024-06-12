@@ -1,3 +1,6 @@
 imports:
   - { resource: 'User/index.yaml' }
   - { resource: 'Error/index.yaml' }
+  - { resource: 'Pagination/index.yaml' }
+  - { resource: 'Wallet/index.yaml' }
+  - { resource: 'Transaction/index.yaml' }
