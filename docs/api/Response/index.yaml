@@ -4,3 +4,4 @@ imports:
   - { resource: 'Pagination/index.yaml' }
   - { resource: 'Wallet/index.yaml' }
   - { resource: 'Transaction/index.yaml' }
+  - { resource: 'Category/index.yaml'}

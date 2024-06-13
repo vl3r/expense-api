@@ -13,7 +13,7 @@ use App\Interfaces\UI\API\Requests\Wallet\UpdateWalletsByUserRequest;
 use App\Interfaces\UI\API\Transformers\Transaction\TransactionTransformer;
 use App\Interfaces\UI\API\Transformers\User\UserTransformer;
 use App\Interfaces\UI\API\Transformers\Wallet\WalletTransformer;
-use App\UseCases\Commands\Wallet\Add\Command;
+use App\UseCases\Commands;
 use App\UseCases\Queries;
 use ArtoxLab\Bundle\ClarcBundle\Core\Interfaces\UI\API\Controllers\AbstractApiController;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -137,7 +137,7 @@ final class MeController extends AbstractApiController
     #[Security(name: 'Bearer')]
     public function addUserWallet(AddWalletsByUserRequest $request, WalletTransformer $transformer): Response
     {
-        $command = new Command($request->getName());
+        $command = new Commands\Wallet\Add\Command($request->getName());
 
         $wallet = $this->commandBus->execute($command);
 
@@ -234,7 +234,7 @@ final class MeController extends AbstractApiController
     public function addTransaction(
         AddTransactionByUserRequest $request, TransactionTransformer $transformer,
     ): Response {
-        $command     = new \App\UseCases\Commands\Transaction\Add\Command(
+        $command     = new Commands\Transaction\Add\Command(
             $request->getWalletId(),
             $request->getCommitedAt(),
             $request->getAmount(),
@@ -288,8 +288,9 @@ final class MeController extends AbstractApiController
         content: new \OpenApi\Attributes\JsonContent(ref: '#/components/schemas/ValidationErrorModel')
     )]
     #[Security(name: 'Bearer')]
-    public function changeTransaction(UpdateTransactionByUserRequest $request): Response {
-        $command = new \App\UseCases\Commands\Transaction\Update\Command(
+    public function changeTransaction(UpdateTransactionByUserRequest $request): Response
+    {
+        $command = new Commands\Transaction\Update\Command(
             $request->getId(),
             $request->getCommitedAt(),
             $request->getAmount()
@@ -324,7 +325,7 @@ final class MeController extends AbstractApiController
     #[Security(name: 'Bearer')]
     public function removeTransaction(RemoveTransactionByUserRequest $request): Response
     {
-        $command = new \App\UseCases\Commands\Transaction\Remove\Command(
+        $command = new Commands\Transaction\Remove\Command(
             $request->getId()
         );
         $this->commandBus->execute($command);
