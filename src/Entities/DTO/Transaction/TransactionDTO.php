@@ -12,8 +12,10 @@ final readonly class TransactionDTO
     public function __construct(
         public string $id,
         public string $walletId,
+        public string $categoryId,
         public Money $amount,
         public DateTimeImmutable $committedAt,
+        public string $note
     ) {
     }
 }

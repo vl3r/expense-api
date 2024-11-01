@@ -13,8 +13,11 @@ final readonly class Command
     public function __construct(
         #[RequiredUuid4]
         public string $walletId,
+        #[RequiredUuid4]
+        public string $categoryId,
         public DateTimeImmutable $commitedAt,
         public PriceDTO $amount,
+        public string $note
     ) {
     }
 }

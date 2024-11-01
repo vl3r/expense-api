@@ -7,16 +7,26 @@
 
     <entity name="App\Entities\Transaction\Transaction" table="transactions">
         <id name="id" column="id" type="guid">
-            <generator strategy="NONE" />
+            <generator strategy="NONE"/>
         </id>
 
-        <field name="walletId" column="wallet_id" type="string" length="36" nullable="false" column-definition="CHAR(36) NOT NULL">
+        <field name="walletId" column="wallet_id" type="string" length="36" nullable="false"
+               column-definition="CHAR(36) NOT NULL">
             <options>
                 <option name="fixed">true</option>
             </options>
         </field>
 
-        <embedded name="amount" class="Money\Money" />
-        <field name="committedAt" type="datetime_immutable" nullable="false" />
+        <field name="categoryId" column="category_id" type="string" length="36" nullable="false"
+               column-definition="CHAR(36) NOT NULL">
+            <options>
+                <option name="fixed">true</option>
+            </options>
+        </field>
+
+        <embedded name="amount" class="Money\Money"/>
+        <field name="committedAt" column="committed_at" type="datetime_immutable" nullable="false"/>
+
+        <field name="note" column="note" type="text" nullable="true"/>
     </entity>
 </doctrine-mapping>

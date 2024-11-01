@@ -6,7 +6,6 @@ namespace App\Interfaces\UI\API\Transformers\Transaction;
 
 use App\Entities\DTO\Transaction\TransactionDTO;
 use App\Entities\Services\Converter\PriceConverterInterface;
-use DateTimeInterface;
 use League\Fractal\TransformerAbstract;
 
 final class TransactionTransformer extends TransformerAbstract
@@ -22,9 +21,11 @@ final class TransactionTransformer extends TransformerAbstract
         return [
             'id'           => $transactionDTO->id,
             'wallet_id'    => $transactionDTO->walletId,
+            'category_id'  => $transactionDTO->categoryId,
             'amount'       => $amount->amount,
             'currency'     => $amount->currency,
             'committed_at' => $transactionDTO->committedAt->format('Y-m-d'),
+            'note'     => $transactionDTO->note,
         ];
     }
 }

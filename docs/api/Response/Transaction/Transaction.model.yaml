@@ -1,4 +1,4 @@
-TransactionsModel:
+TransactionModel:
     required:
         - id
         - wallet_id
@@ -12,6 +12,9 @@ TransactionsModel:
         wallet_id:
             type: string
             format: uuid
+        category_id:
+            type: string
+            format: uuid
         amount:
             type: string
             example: '100'
@@ -21,3 +24,6 @@ TransactionsModel:
         committed_at:
             type: string
             format: date-time
+        note:
+            type: string
+            example: 'comment'

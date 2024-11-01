@@ -26,6 +26,9 @@ final class UpdateTransactionByUserRequest extends AbstractRequest
                 new Assert\Date(),
                 new Assert\NotBlank(),
             ],
+            'category_id' => [
+                new RequiredUuid4(),
+            ],
             'amount'   => [
                 new Assert\Type('numeric'),
                 new Assert\NotBlank(),
@@ -34,6 +37,9 @@ final class UpdateTransactionByUserRequest extends AbstractRequest
                 new Assert\Type('string'),
                 new Assert\Length(3),
                 new Assert\NotBlank(),
+            ],
+            'note' => [
+                new Assert\Type('string'),
             ],
         ];
     }
@@ -48,8 +54,18 @@ final class UpdateTransactionByUserRequest extends AbstractRequest
         return new DateTimeImmutable($this->params['committed_at']);
     }
 
+    public function getCategoryId(): string
+    {
+        return (string) $this->params['category_id'];
+    }
+
     public function getAmount(): PriceDTO
     {
         return new PriceDTO((string) $this->params['amount'], $this->params['currency']);
+    }
+
+    public function getNote(): string
+    {
+        return (string) $this->params['note'];
     }
 }

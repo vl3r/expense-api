@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Interfaces\UI\API\Controllers;
 
 use App\Interfaces\UI\API\Requests\Transaction\AddTransactionByUserRequest;
+use App\Interfaces\UI\API\Requests\Transaction\FindUserTransactionRequest;
 use App\Interfaces\UI\API\Requests\Transaction\RemoveTransactionByUserRequest;
 use App\Interfaces\UI\API\Requests\Transaction\UpdateTransactionByUserRequest;
 use App\Interfaces\UI\API\Requests\User\FindUserWalletsRequest;
@@ -16,6 +17,7 @@ use App\Interfaces\UI\API\Transformers\Wallet\WalletTransformer;
 use App\UseCases\Commands;
 use App\UseCases\Queries;
 use ArtoxLab\Bundle\ClarcBundle\Core\Interfaces\UI\API\Controllers\AbstractApiController;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -201,6 +203,11 @@ final class MeController extends AbstractApiController
                     format: 'uuid'
                 ),
                 new \OpenApi\Attributes\Property(
+                    property: 'category_id',
+                    type: 'string',
+                    format: 'uuid'
+                ),
+                new \OpenApi\Attributes\Property(
                     property: 'committed_at',
                     type: 'string',
                     example: '2000-01-01'
@@ -215,6 +222,11 @@ final class MeController extends AbstractApiController
                     type: 'string',
                     example: 'BYN'
                 ),
+                new \OpenApi\Attributes\Property(
+                    property: 'note',
+                    type: 'string',
+                    example: 'comment'
+                ),
             ]
         )
     )]
@@ -222,7 +234,7 @@ final class MeController extends AbstractApiController
         response: Response::HTTP_CREATED,
         description: 'Created.',
         content: new \OpenApi\Attributes\JsonContent(
-            properties: [new \OpenApi\Attributes\Property(property: 'data', ref: '#/components/schemas/TransactionsModel')]
+            properties: [new \OpenApi\Attributes\Property(property: 'data', ref: '#/components/schemas/TransactionModel')]
         )
     )]
     #[\OpenApi\Attributes\Response(
@@ -236,8 +248,10 @@ final class MeController extends AbstractApiController
     ): Response {
         $command     = new Commands\Transaction\Add\Command(
             $request->getWalletId(),
+            $request->getCategoryId(),
             $request->getCommitedAt(),
             $request->getAmount(),
+            $request->getNote()
         );
         $transaction = $this->commandBus->execute($command);
 
@@ -257,6 +271,11 @@ final class MeController extends AbstractApiController
         content: new \OpenApi\Attributes\JsonContent(
             properties: [
                 new \OpenApi\Attributes\Property(
+                    property: 'category_id',
+                    type: 'string',
+                    format: 'uuid'
+                ),
+                new \OpenApi\Attributes\Property(
                     property: 'committed_at',
                     type: 'string',
                     example: '2000-01-01'
@@ -270,6 +289,11 @@ final class MeController extends AbstractApiController
                     property: 'currency',
                     type: 'string',
                     example: 'BYN'
+                ),
+                new \OpenApi\Attributes\Property(
+                    property: 'note',
+                    type: 'string',
+                    example: 'comment'
                 ),
             ]
         )
@@ -292,8 +316,10 @@ final class MeController extends AbstractApiController
     {
         $command = new Commands\Transaction\Update\Command(
             $request->getId(),
+            $request->getCategoryId(),
             $request->getCommitedAt(),
-            $request->getAmount()
+            $request->getAmount(),
+            $request->getNote()
         );
 
         $this->commandBus->execute($command);
@@ -332,4 +358,84 @@ final class MeController extends AbstractApiController
 
         return $this->noContent();
     }
+
+    /**
+     * @throws Exception
+     * @api           {get} /api/v1/me/wallets/transactions/ Get User Transactions
+     * @apiPermission user
+     * @apiName       GetUserTransactions
+     * @apiGroup      Transactions
+     */
+    #[Route('/api/v1/me/wallets/transactions/', name: 'show_period_user_transactions', methods: ['GET'])]
+    #[\OpenApi\Attributes\Tag(name: 'Me')]
+    #[\OpenApi\Attributes\Parameter(
+        name: 'date_from',
+        description: 'Start date the period',
+        in: 'query',
+        required: false,
+        schema: new \OpenApi\Attributes\Schema(
+            type: 'string',
+            example: 'Y-m-d'
+        ),
+    )]
+    #[\OpenApi\Attributes\Parameter(
+        name: 'date_to',
+        description: 'End date of the period',
+        in: 'query',
+        required: false,
+        schema: new \OpenApi\Attributes\Schema(
+            type: 'string',
+            example: 'Y-m-d'
+        ),
+    )]
+    #[\OpenApi\Attributes\Parameter(
+        name: 'page',
+        description: 'List page',
+        in: 'query',
+        required: false,
+        schema: new \OpenApi\Attributes\Schema(type: 'integer'),
+        example: 1
+    )]
+    #[\OpenApi\Attributes\Parameter(
+        name: 'limit',
+        description: 'Items per page',
+        in: 'query',
+        required: false,
+        schema: new \OpenApi\Attributes\Schema(type: 'integer'),
+        example: 10
+    )]
+    #[\OpenApi\Attributes\Response(
+        response: Response::HTTP_OK,
+        description: 'Ok.',
+        content: new \OpenApi\Attributes\JsonContent(
+            properties: [
+                new \OpenApi\Attributes\Property(
+                    property: 'data',
+                    type: 'array',
+                    items: new \OpenApi\Attributes\Items(ref: '#/components/schemas/TransactionModel')
+                ),
+            ]
+        )
+    )]
+    #[\OpenApi\Attributes\Response(
+        response: Response::HTTP_FORBIDDEN,
+        description: 'Access denied exception.',
+        content: new \OpenApi\Attributes\JsonContent(ref: '#/components/schemas/AccessDeniedErrorModel')
+    )]
+    #[Security(name: 'Bearer')]
+    public function findUserTransaction(
+        FindUserTransactionRequest $request,
+        TransactionTransformer $transformer
+    ): Response {
+        $paginator = $this->queryBus->query(new Queries\Me\Transaction\Get\Command(
+            $request->getDateFrom(),
+            $request->getDateTo(),
+            $request->page(),
+            $request->limit(),
+        ));
+
+        return $this->json($this->transform($paginator, $transformer));
+
+    }
+
 }

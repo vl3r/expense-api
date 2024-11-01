@@ -6,7 +6,6 @@ namespace App\Interfaces\Gateways\Category;
 
 use App\Entities\Category\Category;
 use App\Entities\Category\CategoryGatewayInterface;
-use App\Entities\Transaction\Transaction;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class CategoryGateway implements CategoryGatewayInterface

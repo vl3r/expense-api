@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entities\Transaction;
 
+use ArtoxLab\Bundle\ClarcBundle\Core\UseCases\Interfaces\PaginatorInterface;
+use DateTime;
 
 interface TransactionGatewayInterface
 {
@@ -15,4 +17,14 @@ interface TransactionGatewayInterface
 
     public function findById(string $id): ?Transaction;
 
+    /**
+     * @return PaginatorInterface<Transaction>
+     */
+    public function findTransactionsByTimePeriod(
+        string $userId,
+        ?DateTime $dateFrom,
+        ?DateTime $dateTo,
+        int $page,
+        int $limit
+    ): PaginatorInterface;
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\UseCases\Commands\Transaction\Update;
 
+use App\Entities\Category\CategoryGatewayInterface;
+use App\Entities\Exceptions\Category\CategoryNotFoundException;
 use App\Entities\Exceptions\Transaction\TransactionNotFoundException;
 use App\Entities\Exceptions\User\UserNotFoundException;
 use App\Entities\Exceptions\Wallet\WalletNotFoundException;
@@ -11,17 +13,18 @@ use App\Entities\Services\Converter\PriceConverterInterface;
 use App\Entities\Transaction\TransactionGatewayInterface;
 use App\Entities\User\UserStorageInterface;
 use App\Entities\Wallet\WalletGatewayInterface;
-use DateTimeImmutable;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'command.bus', fromTransport: 'sync')]
 final readonly class Interactor
 {
+
     public function __construct(
         private UserStorageInterface $userStorage,
         private TransactionGatewayInterface $transactionGateway,
         private WalletGatewayInterface $walletGateway,
         private PriceConverterInterface $priceConverter,
+        public CategoryGatewayInterface $categoryGateway,
     ) {
     }
 
@@ -45,6 +48,12 @@ final readonly class Interactor
             throw new WalletNotFoundException();
         }
 
+        $categoryId = $this->categoryGateway->findById($command->categoryId);
+
+        if ($categoryId === null) {
+            throw new CategoryNotFoundException();
+        }
+
         $amount = $this->priceConverter->price2money($command->amount);
 
         if (
@@ -56,6 +65,8 @@ final readonly class Interactor
 
         $transaction->changeAmount($amount);
         $transaction->changeCommittedAt($command->commitedAt);
+        $transaction->changeCategoryId($command->categoryId);
+        $transaction->changeNote($command->note);
 
         $this->transactionGateway->update($transaction);
     }
